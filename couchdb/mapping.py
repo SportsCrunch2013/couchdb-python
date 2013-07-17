@@ -177,6 +177,11 @@ class Mapping(object):
     def wrap(cls, data):
         instance = cls()
         instance._data = data
+        for attrname, field in instance._fields.items():
+            if attrname not in instance._data and isinstance(field, ListField):
+                instance._data[attrname] = []   
+            if attrname not in instance._data and isinstance(field, DictField):
+                instance._data[attrname] = {}         
         return instance
 
     def _to_python(self, value):
